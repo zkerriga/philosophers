@@ -1,23 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   philo_one.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: zkerriga <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/10/02 18:07:18 by zkerriga          #+#    #+#             */
-/*   Updated: 2020/10/02 18:07:21 by zkerriga         ###   ########.fr       */
+/*   Created: 2020/10/02 18:15:38 by zkerriga          #+#    #+#             */
+/*   Updated: 2020/10/02 18:15:39 by zkerriga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_one.h"
+#ifndef PHILO_ONE_H
+# define PHILO_ONE_H
 
-int		main(int ac, char **av)
-{
-	t_args	args;
+# include "lib.h"
 
-	if (!argparse(&args, ac, av))
-	{
-	}
-	return (0);
-}
+#endif
