@@ -1,20 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_one.h                                        :+:      :+:    :+:   */
+/*   table.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zkerriga <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: zkerriga <zkerriga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/10/02 18:15:38 by zkerriga          #+#    #+#             */
-/*   Updated: 2020/10/02 18:15:39 by zkerriga         ###   ########.fr       */
+/*   Created: 2020/10/03 09:15:45 by zkerriga          #+#    #+#             */
+/*   Updated: 2020/10/03 09:16:02 by zkerriga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILO_ONE_H
-# define PHILO_ONE_H
+#ifndef TABLE_H
+# define TABLE_H
 
 # include "lib.h"
 # include "philosopher.h"
-# include "table.h"
+
+typedef struct		s_table
+{
+	size_t			quantity;
+	pthread_mutex_t	*forks_array;
+	t_philosopher	**philosophers_array;
+	void			(*del)(struct s_table *);
+}					t_table;
+
+t_table				*table_new(const t_args *args);
 
 #endif

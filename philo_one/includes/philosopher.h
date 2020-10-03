@@ -1,20 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_one.h                                        :+:      :+:    :+:   */
+/*   philosopher.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zkerriga <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: zkerriga <zkerriga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/10/02 18:15:38 by zkerriga          #+#    #+#             */
-/*   Updated: 2020/10/02 18:15:39 by zkerriga         ###   ########.fr       */
+/*   Created: 2020/10/03 09:20:45 by zkerriga          #+#    #+#             */
+/*   Updated: 2020/10/03 09:20:47 by zkerriga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILO_ONE_H
-# define PHILO_ONE_H
+#ifndef PHILOSOPHER_H
+# define PHILOSOPHER_H
 
-# include "lib.h"
-# include "philosopher.h"
-# include "table.h"
+#include "lib.h"
+
+typedef struct		s_forks
+{
+	pthread_mutex_t	*right;
+	pthread_mutex_t	*left;
+}					t_forks;
+
+typedef struct		s_philosopher
+{
+	unsigned int	id;
+	t_forks			forks;
+}					t_philosopher;
 
 #endif
