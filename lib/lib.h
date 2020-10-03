@@ -40,9 +40,13 @@ typedef struct	s_args
 
 void			put_error(const char *error_str);
 int				argparse(t_args *args, int ac, char **av);
+char			*ft_say_join(const char *time, const char *nbr,
+								const char *message);
 
 int				ft_isspace(int c);
 int				ft_isdigit(int c);
 size_t			ft_strlen(const char *s);
+char			*ft_itoa(size_t n);
+size_t			ft_strlcpy(char *dst, const char *src, size_t size);
 
 #endif

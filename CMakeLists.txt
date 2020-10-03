@@ -10,9 +10,11 @@ set(PHILO_ONE
         philo_one/main.c
         philo_one/classes/table/table_constructors.c
         philo_one/classes/table/table_start_simulation.c
+
         philo_one/classes/philosopher/philosopher_constructors.c
         philo_one/classes/philosopher/philosopher_actions.c
         philo_one/classes/philosopher/philosopher_lifetime.c
+        philo_one/classes/philosopher/philosopher_say.c
         )
 
 add_executable(philosophers
