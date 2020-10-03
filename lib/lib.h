@@ -27,6 +27,8 @@
 # include <pthread.h>
 # include <errno.h>
 
+# define THREAD_SUCCESS 0
+
 typedef struct	s_args
 {
 	ssize_t		number_of_philosophers;
