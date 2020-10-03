@@ -18,7 +18,7 @@ static void		philosopher_del(t_philosopher *self)
 	D(puts("[+] A philosopher was deleted successfully!"))
 }
 
-t_philosopher	*philosopher_new(const t_args *args, const int *born, size_t id, pthread_mutex_t *left_fork, pthread_mutex_t *right_fork)
+t_philosopher	*philosopher_new(pthread_mutex_t *output, const t_args *args, const int *born, size_t id, pthread_mutex_t *left_fork, pthread_mutex_t *right_fork)
 {
 	t_philosopher	*self;
 
@@ -29,8 +29,10 @@ t_philosopher	*philosopher_new(const t_args *args, const int *born, size_t id, p
 		self->stats = args;
 		self->forks.left = left_fork;
 		self->forks.right = right_fork;
+		self->output = output;
 		pthread_create(&self->actions, NULL, (void *(*)(void *))philosopher_action, self); //TODO: check error
 		pthread_create(&self->lifetime, NULL, (void *(*)(void *))philosopher_lifetime, self); //TODO: check error
+		self->say = philosopher_say;
 		self->del = philosopher_del;
 		D(puts("[+] A philosopher was created successfully!"))
 	}
