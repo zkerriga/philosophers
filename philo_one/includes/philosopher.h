@@ -15,6 +15,14 @@
 
 #include "lib.h"
 
+typedef struct		s_say
+{
+	struct timeval	tv;
+	const char		*message;
+	pthread_mutex_t	*output;
+	size_t			id;
+}					t_say;
+
 typedef struct		s_forks
 {
 	pthread_mutex_t	*right;
@@ -29,12 +37,15 @@ typedef struct		s_philosopher
 	pthread_t		lifetime;
 	pthread_t		actions;
 	t_forks			forks;
+	pthread_mutex_t	*output;
+	void			(*say)(struct s_philosopher *, const char *);
 	void			(*del)(struct s_philosopher *);
 }					t_philosopher;
 
-t_philosopher		*philosopher_new(const t_args *args, const int *born, size_t id, pthread_mutex_t *left_fork, pthread_mutex_t *right_fork);
+t_philosopher		*philosopher_new(pthread_mutex_t *output, const t_args *args, const int *born, size_t id, pthread_mutex_t *left_fork, pthread_mutex_t *right_fork);
 
 void				*philosopher_action(t_philosopher *self);
 void				*philosopher_lifetime(t_philosopher *self);
+void				philosopher_say(t_philosopher *self, const char *message);
 
 #endif
