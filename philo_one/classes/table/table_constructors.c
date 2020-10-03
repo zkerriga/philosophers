@@ -18,7 +18,10 @@ static void	table_del(t_table *self)
 
 	i = 0;
 	while (i < self->quantity)
+	{
 		self->philosophers_array[i]->del(self->philosophers_array[i]);
+		++i;
+	}
 	i = 0;
 	while (i < self->quantity)
 		pthread_mutex_destroy(&(self->forks_array[i++]));
@@ -87,7 +90,7 @@ t_table		*table_new(const t_args *args)
 			free(self);
 			return (NULL);
 		}
-		if (!(self->philosophers_array = create_philo_array(args, &self->born)))
+		if (!(self->philosophers_array = create_philo_array(self, args)))
 		{
 			while (self->quantity)
 				pthread_mutex_destroy(&(self->forks_array[--self->quantity]));
