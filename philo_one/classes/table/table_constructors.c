@@ -54,7 +54,7 @@ static pthread_mutex_t	*create_forks_array(size_t quantity)
 static t_philosopher	**create_philo_array(t_table *self, const t_args *args)
 {
 	t_philosopher	**philo_array;
-	size_t			i;
+	ssize_t			i;
 
 	if ((philo_array = malloc(sizeof(t_philosopher *) * args->number_of_philosophers)))
 	{

@@ -18,7 +18,7 @@ static int	simulation(t_table *table)
 	table->start_simulation(table);
 	D(puts("-> SLEEP 5 <-");)
 	usleep(5000000lu);
-
+	return (0);
 }
 
 int		main(int ac, char **av)
