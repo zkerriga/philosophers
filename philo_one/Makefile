@@ -25,7 +25,7 @@ LIB_FILES = $(wildcard $(LIB_DIR)/*.c)
 LIB_FILES_O = $(addprefix $(OBJ_DIR)/, $(subst ../,,$(LIB_FILES:.c=.o)))
 
 # TODO: заменить на перепись файлов
-FILES = $(wildcard *.c)
+FILES = $(wildcard *.c) $(wildcard classes/*/*.c)
 FILES_O = $(addprefix $(OBJ_DIR)/$(PRJ_DIR)/, $(FILES:.c=.o))
 
 .PHONY: all
@@ -33,7 +33,8 @@ all: $(OBJ_DIR) $(NAME)
 	@echo -e "\n\033[32m[+] The $(NAME) assembled!\033[0m\n"
 
 $(OBJ_DIR):
-	@mkdir -p $(OBJ_DIR) $(OBJ_DIR)/$(PRJ_DIR) $(OBJ_DIR)/$(subst ../,,$(LIB_DIR))
+	@mkdir -p	$(OBJ_DIR) $(OBJ_DIR)/$(PRJ_DIR) $(OBJ_DIR)/$(subst ../,,$(LIB_DIR)) \
+				$(OBJ_DIR)/$(PRJ_DIR)/classes/table $(OBJ_DIR)/$(PRJ_DIR)/classes/philosopher
 
 $(NAME): $(LIB_FILES_O) $(FILES_O)
 	$(CC) $(FLAGS) $(LIB_FILES_O) $(FILES_O) -o $(NAME)
