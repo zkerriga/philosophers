@@ -19,6 +19,7 @@
 typedef struct		s_table
 {
 	size_t			quantity;
+	int				born;
 	pthread_mutex_t	*forks_array;
 	t_philosopher	**philosophers_array;
 	void			(*del)(struct s_table *);
