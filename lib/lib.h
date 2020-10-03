@@ -13,8 +13,19 @@
 #ifndef LIB_H
 # define LIB_H
 
-#include <stdlib.h>
-#include <unistd.h>
+#define DEBUG 1 //TODO: delete this
+#if DEBUG == 1
+#include <stdio.h>
+#define D(x) {printf("\033[35m"); x ; printf("\033[0m");}
+#else
+#define D(x) {}
+#endif
+
+# include <stdlib.h>
+# include <unistd.h>
+# include <sys/time.h>
+# include <pthread.h>
+# include <errno.h>
 
 typedef struct	s_args
 {

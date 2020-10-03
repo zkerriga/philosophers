@@ -8,6 +8,8 @@ FILE(GLOB LIB lib/*.c)
 
 set(PHILO_ONE
         philo_one/main.c
+        philo_one/classes/table/table_constructors.c
+        philo_one/classes/philosopher/philosopher_constructors.c
         )
 
 add_executable(philosophers
