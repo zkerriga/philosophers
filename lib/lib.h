@@ -18,10 +18,10 @@
 
 typedef struct	s_args
 {
-	size_t		number_of_philosophers;
-	size_t		time_to_die;
-	size_t		time_to_eat;
-	size_t		time_to_sleep;
+	ssize_t		number_of_philosophers;
+	ssize_t		time_to_die;
+	ssize_t		time_to_eat;
+	ssize_t		time_to_sleep;
 	ssize_t		number_of_times_each_philosopher_must_eat;
 }				t_args;
 

@@ -15,4 +15,12 @@
 
 # include "lib.h"
 
+#define DEBUG 1 //TODO: delete this
+#if DEBUG == 1
+#include <stdio.h>
+#define D(x) {x}
+#else
+#define D(x) {}
+#endif
+
 #endif
