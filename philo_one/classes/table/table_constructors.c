@@ -97,6 +97,7 @@ t_table		*table_new(const t_args *args)
 			free(self);
 			return (NULL);
 		}
+		self->start_simulation = table_start_simulation;
 		self->del = table_del;
 		D(puts("[+] The table was created successfully!"))
 	}
