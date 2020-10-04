@@ -53,7 +53,7 @@ static void	*create_and_put_str(t_say *say)
 	return (THREAD_SUCCESS);
 }
 
-void	philosopher_say(t_philosopher *self, const char *message)
+pthread_t	philosopher_say(t_philosopher *self, const char *message)
 {
 	t_say		*say;
 	pthread_t	say_thread;
@@ -61,13 +61,13 @@ void	philosopher_say(t_philosopher *self, const char *message)
 	if (!(say = malloc(sizeof(t_say))))
 	{
 		put_error("An ENOMEM error during the speech. Skipped!");
-		return ;
+		return (NULL);
 	}
 	if (gettimeofday(&(say->tv), NULL))
 	{
 		free(say);
 		put_error("A `gettimeofday` error during the speech. Skipped!");
-		return ;
+		return (NULL);
 	}
 	say->message = message;
 	say->output = self->output;
@@ -77,4 +77,5 @@ void	philosopher_say(t_philosopher *self, const char *message)
 		free(say);
 		put_error("A thread error during the speech. Skipped!");
 	}
+	return (say_thread);
 }

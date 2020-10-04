@@ -20,6 +20,7 @@ typedef struct		s_table
 {
 	size_t			quantity;
 	int				born;
+	int				someone_died;
 	pthread_mutex_t	output;
 	pthread_mutex_t	*forks_array;
 	t_philosopher	**philosophers_array;

@@ -62,7 +62,7 @@ static t_philosopher	**create_philo_array(t_table *self, const t_args *args)
 		i = 0;
 		while (i < args->number_of_philosophers)
 		{
-			philo_array[i] = philosopher_new(&self->output, args, &self->born, i + 1,  &(self->forks_array[i]), &(self->forks_array[(i + 1 == args->number_of_philosophers) ? 0 : i + 1]));
+			philo_array[i] = philosopher_new(&self->someone_died, &self->output, args, &self->born, i + 1,  &(self->forks_array[i]), &(self->forks_array[(i + 1 == args->number_of_philosophers) ? 0 : i + 1]));
 			if (!philo_array[i])
 			{
 				while (i)
@@ -86,6 +86,7 @@ t_table		*table_new(const t_args *args)
 	{
 		self->quantity = args->number_of_philosophers;
 		self->born = 0;
+		self->someone_died = 0;
 		if (pthread_mutex_init(&self->output, NULL))
 		{
 			free(self);
