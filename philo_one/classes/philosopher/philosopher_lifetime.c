@@ -52,8 +52,11 @@ void		*philosopher_lifetime(t_philosopher *self)
 		self->eat_time = 0;
 		usleep(next_sleep_time * ms_to_us);
 	}
-	*self->someone_died = 1;
-	D(printf("[+] The %ld philosopher died!\n", self->id);)
-	pthread_join(self->say(self, SAY_DIE), NULL);
+	if (!*self->someone_died)
+	{
+		*self->someone_died = 1;
+		D(printf("[+] The %ld philosopher died!\n", self->id);)
+		pthread_join(self->say(self, SAY_DIE), NULL);
+	}
 	return (THREAD_SUCCESS);
 }
