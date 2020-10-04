@@ -32,6 +32,7 @@ t_philosopher	*philosopher_new(int *someone_died, pthread_mutex_t *output, const
 		self->output = output;
 		self->eat_time = 0;
 		self->someone_died = someone_died;
+		self->eat_counter = (args->number_of_times_each_philosopher_must_eat < 0) ? 1 : args->number_of_times_each_philosopher_must_eat;
 		pthread_create(&self->actions, NULL, (void *(*)(void *))philosopher_action, self); //TODO: check error
 		pthread_create(&self->lifetime, NULL, (void *(*)(void *))philosopher_lifetime, self); //TODO: check error
 		self->say = philosopher_say;

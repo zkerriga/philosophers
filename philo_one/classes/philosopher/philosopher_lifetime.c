@@ -12,7 +12,7 @@
 
 #include "philosopher.h"
 
-static int	set_time(size_t *dest)
+static int	set_time(size_t *dest) //TODO: две одинаковые функции
 {
 	const int		success_code = 0;
 	struct timeval	tv;
