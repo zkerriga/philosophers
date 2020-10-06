@@ -55,17 +55,24 @@ static int	set_arguments(t_args *args, int ac, char **av)
 		put_error("Time to sleep must be a positive number!");
 	else if (ac == 6)
 	{
-		if ((args->n_of_times
-			= simple_atoi(av[5])) < 1)
-		{
+		if ((args->n_of_times = simple_atoi(av[5])) < 1)
 			put_error("Number of meals must be a positive number!");
-		}
 		else
 			return (success_code);
 	}
 	else
 		return (success_code);
 	return (error_code);
+}
+
+static void	put_special_error(void)
+{
+	put_error("Error!");
+	put_error("The program accepts 4 positive numeric values \
+and 1 more optional) in the following order:");
+	put_error("  1. Number of philosophers");
+	put_error("  2. Time to die\n  3. Time to eat\n  4. Time to sleep");
+	put_error("  5. Number of times each philosopher must eat");
 }
 
 /*
@@ -75,16 +82,12 @@ static int	set_arguments(t_args *args, int ac, char **av)
 
 int			argparse(t_args *args, int ac, char **av)
 {
-	const int	error_code = 1;
-	const char	*error_message = "Error!\nThe program accepts 4 positive nume\
-ric values (and 1 more optional) in the following order:\n  1. Number of philo\
-sophers\n  2. Time to die\n  3. Time to eat\n  4. Time to sleep\n  5. Number o\
-f times each philosopher must eat\n";
 	int			i;
+	const int	error_code = 1;
 
 	if (ac < 5 || ac > 6)
 	{
-		put_error(error_message);
+		put_special_error();
 		return (error_code);
 	}
 	i = ac;
@@ -92,7 +95,7 @@ f times each philosopher must eat\n";
 	{
 		if (!is_valid_argument(av[i]))
 		{
-			put_error(error_message);
+			put_special_error();
 			return (error_code);
 		}
 	}
