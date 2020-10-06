@@ -12,20 +12,6 @@
 
 #include "philosopher.h"
 
-static int	set_time(size_t *dest) //TODO: две одинаковые функции
-{
-	const int		success_code = 0;
-	struct timeval	tv;
-
-	if (gettimeofday(&tv, NULL))
-	{
-		put_error("A `gettimeofday` error. Critical!");
-		return (errno);
-	}
-	*dest = tv.tv_sec * 1000 + tv.tv_usec / 1000;
-	return (success_code);
-}
-
 /*
 ** This method is a stream that keeps track of the philosopher's lifetime.
 ** As soon as the philosopher dies, the table object receives information
@@ -35,22 +21,20 @@ static int	set_time(size_t *dest) //TODO: две одинаковые функц
 
 void		*philosopher_lifetime(t_philosopher *self)
 {
-	const int	ms_to_us = 1000;
-	size_t		start_time;
-	size_t		next_sleep_time;
+	size_t		start_time_usec;
+	size_t		next_sleep_time_usec;
 
 	D(printf("[+] Start lifetime for %ld philosopher!\n", self->id);)
 	while (!(*self->born))
 		;
-	if (set_time(&start_time))
-		return (THREAD_ERROR);
-	usleep(self->stats->time_to_die * ms_to_us);
+	set_time_usec(&start_time_usec);
+	ft_usleep(self->stats->time_to_die);
 	while (self->eat_time)
 	{
-		next_sleep_time = self->eat_time - start_time; //TODO: eat_time < start_time?
-		start_time = self->eat_time;
+		next_sleep_time_usec = self->eat_time - start_time_usec; //TODO: eat_time < start_time?
+		start_time_usec = self->eat_time;
 		self->eat_time = 0; //TODO: переработать
-		usleep(next_sleep_time * ms_to_us);
+		ft_usleep(next_sleep_time_usec);
 	}
 	if (!*self->someone_died && self->eat_counter != 0)
 	{

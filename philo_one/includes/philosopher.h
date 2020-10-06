@@ -22,11 +22,11 @@
 
 typedef struct		s_say
 {
-	struct timeval	tv;
+	size_t			time_usec;
+	size_t			id;
 	const char		*message;
 	int				is_die;
 	pthread_mutex_t	*output;
-	size_t			id;
 }					t_say;
 
 typedef struct		s_forks

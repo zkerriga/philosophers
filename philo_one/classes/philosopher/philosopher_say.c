@@ -28,13 +28,11 @@ static void	put_and_free_full_str(t_say *say, char *full_str)
 
 static void	*create_and_put_str(t_say *say)
 {
-	size_t	time;
 	char	*time_str;
 	char	*nbr_str;
 	char	*full_str;
 
-	time = say->tv.tv_sec * 1000 + say->tv.tv_usec / 1000;
-	time_str = ft_itoa(time);
+	time_str = ft_itoa(say->time_usec / 1000);
 	nbr_str = ft_itoa(say->id);
 	if (!time_str || !nbr_str ||
 		!(full_str = ft_say_join(time_str, nbr_str, say->message)))
@@ -64,16 +62,11 @@ pthread_t	philosopher_say(t_philosopher *self, const char *message, int is_die)
 		put_error("An ENOMEM error during the speech. Skipped!");
 		return (NULL);
 	}
-	if (gettimeofday(&(say->tv), NULL))
-	{
-		free(say);
-		put_error("A `gettimeofday` error during the speech. Skipped!");
-		return (NULL);
-	}
+	set_time_usec(&say->time_usec);
+	say->id = self->id;
 	say->message = message;
 	say->is_die = is_die;
 	say->output = self->output;
-	say->id = self->id;
 	if (pthread_create(&say_thread, NULL, (void *(*)(void *))create_and_put_str, say))
 	{
 		free(say);

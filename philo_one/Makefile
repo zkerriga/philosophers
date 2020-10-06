@@ -57,3 +57,16 @@ fclean: clean
 
 .PHONY: re
 re: fclean all
+
+.PHONY: live0 live1 live2 die0
+live0: $(NAME)
+	./$(NAME) 5 800 200 200
+
+live1: $(NAME)
+	./$(NAME) 5 800 200 200 7
+
+live2: $(NAME)
+	./$(NAME) 4 410 200 200
+
+die0: $(NAME)
+	./$(NAME) 4 310 200 100
