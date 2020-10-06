@@ -12,8 +12,18 @@
 
 #include "philosopher.h"
 
+static int	time_was_changed(t_philosopher *self, size_t last_eat_time)
+{
+	int		time_was_changed;
+
+	pthread_mutex_lock(&self->eat_mutex);
+	time_was_changed = (self->eat_time > last_eat_time);
+	pthread_mutex_unlock(&self->eat_mutex);
+	return (time_was_changed);
+}
+
 /*
-** This method is a stream that keeps track of the philosopher's lifetime.
+** This method is a thread that keeps track of the philosopher's lifetime.
 ** As soon as the philosopher dies, the table object receives information
 ** about this via the `someone_died` field, after which it begins waiting
 ** for the death message to finish printing.
@@ -21,25 +31,23 @@
 
 void		*philosopher_lifetime(t_philosopher *self)
 {
-	size_t		start_time_usec;
-	size_t		next_sleep_time_usec;
+	size_t		next_sleep_time;
+	size_t		last_eat_time;
 
 	while (!(*self->born))
 		;
-	set_time_usec(&start_time_usec);
+	set_time_usec(&last_eat_time);
 	ft_usleep(self->stats->time_to_die);
-	while (self->eat_time)
+	while (time_was_changed(self, last_eat_time))
 	{
-		next_sleep_time_usec = self->eat_time - start_time_usec; //TODO: eat_time < start_time?
-		start_time_usec = self->eat_time;
-		self->eat_time = 0; //TODO: переработать на разные переменные
-		ft_usleep(next_sleep_time_usec);
+		last_eat_time = self->eat_time;
+		next_sleep_time = self->eat_time - last_eat_time;
+		ft_usleep(next_sleep_time);
 	}
 	if (!*self->someone_died && self->eat_counter != 0)
 	{
 		*self->someone_died = 1;
 		pthread_join(self->say(self, SAY_DIE, 1), NULL);
 	}
-	D(puts("[-] STOP LIFETIME");)
 	return (THREAD_SUCCESS);
 }

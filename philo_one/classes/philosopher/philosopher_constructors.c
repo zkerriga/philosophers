@@ -14,6 +14,7 @@
 
 static void		philosopher_del(t_philosopher *self)
 {
+	pthread_mutex_destroy(&self->eat_mutex);
 	free(self);
 }
 
@@ -31,9 +32,13 @@ t_philosopher	*philosopher_new(int *someone_died, pthread_mutex_t *output, const
 		self->output = output;
 		self->eat_time = 0;
 		self->someone_died = someone_died;
-		self->eat_counter = (args->number_of_times_each_philosopher_must_eat < 0) ? 1 : args->number_of_times_each_philosopher_must_eat;
-		pthread_create(&self->actions, NULL, (void *(*)(void *))philosopher_action, self); //TODO: check error
-		pthread_create(&self->lifetime, NULL, (void *(*)(void *))philosopher_lifetime, self); //TODO: check error
+		self->eat_counter = (args->n_of_times < 0) ? 1 : args->n_of_times;
+		if (pthread_mutex_init(&self->eat_mutex, NULL) ||
+pthread_create(&self->actions, NULL, (void *(*)(void *))philosopher_action, self) ||
+pthread_create(&self->lifetime, NULL, (void *(*)(void *))philosopher_lifetime, self))
+		{
+			return (NULL);
+		}
 		self->say = philosopher_say;
 		self->del = philosopher_del;
 	}

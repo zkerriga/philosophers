@@ -44,8 +44,8 @@ static int	set_arguments(t_args *args, int ac, char **av)
 	const int	success_code = 0;
 	const int	error_code = 1;
 
-	args->number_of_times_each_philosopher_must_eat = -1;
-	if ((args->number_of_philosophers = simple_atoi(av[1])) < 1)
+	args->n_of_times = -1;
+	if ((args->n_of_philosophers = simple_atoi(av[1])) < 1)
 		put_error("The number of philosophers must be a positive number!");
 	else if ((args->time_to_die = simple_atoi(av[2]) * 1000) < 1)
 		put_error("Time to death must be a positive number!");
@@ -55,7 +55,7 @@ static int	set_arguments(t_args *args, int ac, char **av)
 		put_error("Time to sleep must be a positive number!");
 	else if (ac == 6)
 	{
-		if ((args->number_of_times_each_philosopher_must_eat
+		if ((args->n_of_times
 			= simple_atoi(av[5])) < 1)
 		{
 			put_error("Number of meals must be a positive number!");

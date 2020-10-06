@@ -65,6 +65,9 @@ live0: $(NAME)
 live1: $(NAME)
 	./$(NAME) 5 800 200 200 7
 
+live4: $(NAME)
+	./$(NAME) 5 800 200 200 150
+
 live2: $(NAME)
 	./$(NAME) 4 410 200 200
 

@@ -20,11 +20,13 @@ void	philosopher_take_a_fork(t_philosopher *self, pthread_mutex_t *fork)
 
 void	philosopher_eating(t_philosopher *self)
 {
+	pthread_mutex_lock(&self->eat_mutex);
 	set_time_usec(&self->eat_time);
+	pthread_mutex_unlock(&self->eat_mutex);
 	self->say(self, SAY_EAT, 0);
 	ft_usleep(self->stats->time_to_eat);
-	pthread_mutex_unlock(self->forks.right);
-	pthread_mutex_unlock(self->forks.left);
+	pthread_mutex_unlock((self->id % 2) ? self->forks.right : self->forks.left);
+	pthread_mutex_unlock((self->id % 2) ? self->forks.left : self->forks.right);
 }
 
 void	philosopher_sleeping(t_philosopher *self)
@@ -49,11 +51,10 @@ void	*philosopher_action(t_philosopher *self)
 			philosopher_sleeping(self);
 		if (!*self->someone_died)
 			self->say(self, SAY_THINK, 0);
-		if (self->stats->number_of_times_each_philosopher_must_eat > 0)
+		if (self->stats->n_of_times > 0)
 			--self->eat_counter;
 		if (!self->eat_counter)
 			*self->someone_died = 1;
 	}
-	D(puts("[-] STOP CYCLE");)
 	return (THREAD_SUCCESS);
 }

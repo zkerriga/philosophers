@@ -32,11 +32,11 @@
 
 typedef struct	s_args
 {
-	ssize_t		number_of_philosophers;
+	ssize_t		n_of_philosophers;
 	ssize_t		time_to_die;
 	ssize_t		time_to_eat;
 	ssize_t		time_to_sleep;
-	ssize_t		number_of_times_each_philosopher_must_eat;
+	ssize_t		n_of_times;
 }				t_args;
 
 void			put_error(const char *error_str);
