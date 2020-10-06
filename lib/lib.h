@@ -16,12 +16,9 @@
 #define DEBUG 0 //TODO: delete this
 #if DEBUG == 1
 #include <stdio.h>
-//#define D(x) {printf("\033[35m"); x ; printf("\033[0m");}
-#define D(x) {}
-#define D2(x) {printf("\033[35m"); x ; printf("\033[0m");}
+#define D(x) {printf("\033[35m"); x ; printf("\033[0m");}
 #else
 #define D(x) {}
-#define D2(x) {}
 #endif
 
 # include <stdlib.h>

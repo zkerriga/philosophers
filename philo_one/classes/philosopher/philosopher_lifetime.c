@@ -24,7 +24,6 @@ void		*philosopher_lifetime(t_philosopher *self)
 	size_t		start_time_usec;
 	size_t		next_sleep_time_usec;
 
-	D(printf("[+] Start lifetime for %ld philosopher!\n", self->id);)
 	while (!(*self->born))
 		;
 	set_time_usec(&start_time_usec);
@@ -33,15 +32,14 @@ void		*philosopher_lifetime(t_philosopher *self)
 	{
 		next_sleep_time_usec = self->eat_time - start_time_usec; //TODO: eat_time < start_time?
 		start_time_usec = self->eat_time;
-		self->eat_time = 0; //TODO: переработать
+		self->eat_time = 0; //TODO: переработать на разные переменные
 		ft_usleep(next_sleep_time_usec);
 	}
 	if (!*self->someone_died && self->eat_counter != 0)
 	{
 		*self->someone_died = 1;
-		D(printf("[+] The %ld philosopher died!\n", self->id);)
 		pthread_join(self->say(self, SAY_DIE, 1), NULL);
 	}
-	D2(puts("[-] STOP LIFETIME");)
+	D(puts("[-] STOP LIFETIME");)
 	return (THREAD_SUCCESS);
 }

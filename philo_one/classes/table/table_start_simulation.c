@@ -17,11 +17,10 @@ void	table_start_simulation(t_table *self)
 	size_t	i;
 
 	i = self->quantity;
-	D(puts("START SIMULATION");)
 	self->born = 1;
 	while (i--)
 	{
 		pthread_join(self->philosophers_array[i]->lifetime, NULL);
 	}
-	D2(puts("END OF JOIN");)
+	D(puts("END OF JOIN");)
 }

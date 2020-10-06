@@ -35,7 +35,6 @@ void	philosopher_sleeping(t_philosopher *self)
 
 void	*philosopher_action(t_philosopher *self)
 {
-	D(printf("[+] Start actions for %ld philosopher!\n", self->id);)
 	while (!(*self->born))
 		;
 	while (self->eat_counter)
@@ -55,6 +54,6 @@ void	*philosopher_action(t_philosopher *self)
 		if (!self->eat_counter)
 			*self->someone_died = 1;
 	}
-	D2(puts("[-] STOP CYCLE");)
+	D(puts("[-] STOP CYCLE");)
 	return (THREAD_SUCCESS);
 }

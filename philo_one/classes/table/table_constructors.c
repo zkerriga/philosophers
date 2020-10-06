@@ -27,7 +27,6 @@ static void	table_del(t_table *self)
 	while (i < self->quantity)
 		pthread_mutex_destroy(&(self->forks_array[i++]));
 	free(self);
-	D(puts("[+] The table was deleted successfully!"))
 }
 
 static pthread_mutex_t	*create_forks_array(size_t quantity)
@@ -108,7 +107,6 @@ t_table		*table_new(const t_args *args)
 		}
 		self->start_simulation = table_start_simulation;
 		self->del = table_del;
-		D(puts("[+] The table was created successfully!"))
 	}
 	return (self);
 }
