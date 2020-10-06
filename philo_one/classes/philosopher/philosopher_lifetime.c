@@ -12,14 +12,13 @@
 
 #include "philosopher.h"
 
-static int	time_was_changed(t_philosopher *self, size_t last_eat_time)
+static int	time_was_changed(t_philosopher *self, size_t last_eat_time,
+								size_t *eat_time_cp)
 {
-	int		time_was_changed;
-
 	pthread_mutex_lock(&self->eat_mutex);
-	time_was_changed = (self->eat_time > last_eat_time);
+	*eat_time_cp = self->eat_time;
 	pthread_mutex_unlock(&self->eat_mutex);
-	return (time_was_changed);
+	return (*eat_time_cp > last_eat_time);
 }
 
 /*
@@ -33,15 +32,16 @@ void		*philosopher_lifetime(t_philosopher *self)
 {
 	size_t		next_sleep_time;
 	size_t		last_eat_time;
+	size_t		eat_time_cp;
 
 	while (!(*self->born))
 		;
 	set_time_usec(&last_eat_time);
 	ft_usleep(self->stats->time_to_die);
-	while (time_was_changed(self, last_eat_time))
+	while (time_was_changed(self, last_eat_time, &eat_time_cp))
 	{
-		last_eat_time = self->eat_time;
-		next_sleep_time = self->eat_time - last_eat_time;
+		next_sleep_time = eat_time_cp - last_eat_time;
+		last_eat_time = eat_time_cp;
 		ft_usleep(next_sleep_time);
 	}
 	if (!*self->someone_died && self->eat_counter != 0)
