@@ -21,7 +21,8 @@ static void	put_and_free_full_str(t_say *say, char *full_str)
 	output = say->output;
 	pthread_mutex_lock(output);
 	write(1, full_str, len);
-	pthread_mutex_unlock(output);
+	if (!say->is_die)
+		pthread_mutex_unlock(output);
 	free(full_str);
 }
 
@@ -53,7 +54,7 @@ static void	*create_and_put_str(t_say *say)
 	return (THREAD_SUCCESS);
 }
 
-pthread_t	philosopher_say(t_philosopher *self, const char *message)
+pthread_t	philosopher_say(t_philosopher *self, const char *message, int is_die)
 {
 	t_say		*say;
 	pthread_t	say_thread;
@@ -70,6 +71,7 @@ pthread_t	philosopher_say(t_philosopher *self, const char *message)
 		return (NULL);
 	}
 	say->message = message;
+	say->is_die = is_die;
 	say->output = self->output;
 	say->id = self->id;
 	if (pthread_create(&say_thread, NULL, (void *(*)(void *))create_and_put_str, say))

@@ -12,15 +12,6 @@
 
 #include "philo_one.h"
 
-static int	simulation(t_table *table)
-{
-	usleep(500000lu);
-	table->start_simulation(table);
-	D(puts("-> SLEEP 5 <-");)
-	usleep(5000000lu);
-	return (0);
-}
-
 int		main(int ac, char **av)
 {
 	t_args	args;
@@ -31,7 +22,7 @@ int		main(int ac, char **av)
 	D(printf("Args:\n1 -> %ld\n2 -> %ld\n3 -> %ld\n4 -> %ld\n5 -> %ld\n", args.number_of_philosophers, args.time_to_die, args.time_to_eat, args.time_to_sleep, args.number_of_times_each_philosopher_must_eat))
 	if (!(table = table_new(&args)))
 		return (ENOMEM);
-	simulation(table);
+	table->start_simulation(table);
 	table->del(table);
 	return (0);
 }

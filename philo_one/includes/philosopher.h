@@ -24,6 +24,7 @@ typedef struct		s_say
 {
 	struct timeval	tv;
 	const char		*message;
+	int				is_die;
 	pthread_mutex_t	*output;
 	size_t			id;
 }					t_say;
@@ -46,7 +47,7 @@ typedef struct		s_philosopher
 	size_t			eat_time;
 	int				*someone_died;
 	ssize_t			eat_counter;
-	pthread_t		(*say)(struct s_philosopher *, const char *);
+	pthread_t		(*say)(struct s_philosopher *, const char *, int);
 	void			(*del)(struct s_philosopher *);
 }					t_philosopher;
 
@@ -54,6 +55,6 @@ t_philosopher		*philosopher_new(int *someone_died, pthread_mutex_t *output, cons
 
 void				*philosopher_action(t_philosopher *self);
 void				*philosopher_lifetime(t_philosopher *self);
-pthread_t			philosopher_say(t_philosopher *self, const char *message);
+pthread_t			philosopher_say(t_philosopher *self, const char *message, int is_die);
 
 #endif

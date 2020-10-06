@@ -49,14 +49,15 @@ void		*philosopher_lifetime(t_philosopher *self)
 	{
 		next_sleep_time = self->eat_time - start_time; //TODO: eat_time < start_time?
 		start_time = self->eat_time;
-		self->eat_time = 0;
+		self->eat_time = 0; //TODO: переработать
 		usleep(next_sleep_time * ms_to_us);
 	}
-	if (!*self->someone_died)
+	if (!*self->someone_died && self->eat_counter != 0)
 	{
 		*self->someone_died = 1;
 		D(printf("[+] The %ld philosopher died!\n", self->id);)
-		pthread_join(self->say(self, SAY_DIE), NULL);
+		pthread_join(self->say(self, SAY_DIE, 1), NULL);
 	}
+	D2(puts("[-] STOP LIFETIME");)
 	return (THREAD_SUCCESS);
 }
