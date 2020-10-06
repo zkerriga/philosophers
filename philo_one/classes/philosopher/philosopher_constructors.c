@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "philosopher.h"
+#include "table.h"
 
 static void		philosopher_del(t_philosopher *self)
 {
@@ -18,24 +19,34 @@ static void		philosopher_del(t_philosopher *self)
 	free(self);
 }
 
-t_philosopher	*philosopher_new(int *someone_died, pthread_mutex_t *output, const t_args *args, const int *born, size_t id, pthread_mutex_t *left_fork, pthread_mutex_t *right_fork)
+static void		table_pre_init(t_philosopher *self, t_table *table)
+{
+	self->born = &table->born;
+	self->stats = table->stats;
+	self->output = &table->output;
+	self->someone_died = &table->someone_died;
+}
+
+t_philosopher	*philosopher_new(void *table, size_t id,
+						pthread_mutex_t *left_fork, pthread_mutex_t *right_fork)
 {
 	t_philosopher	*self;
+	ssize_t			n_of_times;
 
 	if ((self = (t_philosopher *)malloc(sizeof(t_philosopher))))
 	{
 		self->id = id;
-		self->born = born;
-		self->stats = args;
+		table_pre_init(self, table);
 		self->forks.left = left_fork;
 		self->forks.right = right_fork;
-		self->output = output;
 		self->eat_time = 0;
-		self->someone_died = someone_died;
-		self->eat_counter = (args->n_of_times < 0) ? 1 : args->n_of_times;
+		n_of_times = self->stats->n_of_times;
+		self->eat_counter = (n_of_times < 0) ? 1 : n_of_times;
 		if (pthread_mutex_init(&self->eat_mutex, NULL) ||
-pthread_create(&self->actions, NULL, (void *(*)(void *))philosopher_action, self) ||
-pthread_create(&self->lifetime, NULL, (void *(*)(void *))philosopher_lifetime, self))
+pthread_create(&self->actions, NULL,
+			(void *(*)(void *))philosopher_action, self) ||
+pthread_create(&self->lifetime, NULL,
+			(void *(*)(void *))philosopher_lifetime, self))
 		{
 			return (NULL);
 		}

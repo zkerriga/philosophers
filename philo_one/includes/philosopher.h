@@ -52,8 +52,8 @@ typedef struct		s_philosopher
 	void			(*del)(struct s_philosopher *);
 }					t_philosopher;
 
-t_philosopher		*philosopher_new(int *someone_died, pthread_mutex_t *output, const t_args *args, const int *born, size_t id, pthread_mutex_t *left_fork, pthread_mutex_t *right_fork);
-
+t_philosopher		*philosopher_new(void *table, size_t id,
+					pthread_mutex_t *left_fork, pthread_mutex_t *right_fork);
 void				*philosopher_action(t_philosopher *self);
 void				*philosopher_lifetime(t_philosopher *self);
 pthread_t			philosopher_say(t_philosopher *self, const char *message,

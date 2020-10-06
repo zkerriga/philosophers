@@ -18,6 +18,7 @@
 
 typedef struct		s_table
 {
+	const t_args	*stats;
 	size_t			quantity;
 	int				born;
 	int				someone_died;
