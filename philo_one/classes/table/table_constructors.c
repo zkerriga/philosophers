@@ -12,7 +12,7 @@
 
 #include "table.h"
 
-static void	table_del(t_table *self)
+static void				table_del(t_table *self)
 {
 	size_t	i;
 
@@ -56,19 +56,19 @@ static t_philosopher	**create_philo_array(t_table *self, const t_args *args)
 	t_philosopher	**philo_array;
 	ssize_t			i;
 
-	if ((philo_array = malloc(sizeof(t_philosopher *) * args->n_of_philosophers)))
+	philo_array = malloc(sizeof(t_philosopher *) * args->n_of_philosophers);
+	if (philo_array)
 	{
 		i = 0;
 		while (i < args->n_of_philosophers)
 		{
-			philo_array[i] = philosopher_new(self, i + 1,  &(self->forks_array[i]), &(self->forks_array[(i + 1 == args->n_of_philosophers) ? 0 : i + 1]));
+			philo_array[i] = philosopher_new(self, i + 1,
+&(self->forks_array[i]),
+&(self->forks_array[(i + 1 == args->n_of_philosophers) ? 0 : i + 1]));
 			if (!philo_array[i])
 			{
-				while (i)
-				{
-					--i;
+				while (i--)
 					philo_array[i]->del(philo_array[i]);
-				}
 				return (NULL);
 			}
 			++i;
@@ -77,21 +77,30 @@ static t_philosopher	**create_philo_array(t_table *self, const t_args *args)
 	return (philo_array);
 }
 
-t_table		*table_new(const t_args *args)
+static t_table			*pre_init(t_table *self, const t_args *args)
+{
+	self->stats = args;
+	self->quantity = args->n_of_philosophers;
+	self->born = 0;
+	self->someone_died = 0;
+	self->start_simulation = table_start_simulation;
+	self->del = table_del;
+	if (pthread_mutex_init(&self->output, NULL))
+	{
+		free(self);
+		return (NULL);
+	}
+	return (self);
+}
+
+t_table					*table_new(const t_args *args)
 {
 	t_table	*self;
 
 	if ((self = (t_table *)malloc(sizeof(t_table))))
 	{
-		self->stats = args;
-		self->quantity = args->n_of_philosophers;
-		self->born = 0;
-		self->someone_died = 0;
-		if (pthread_mutex_init(&self->output, NULL))
-		{
-			free(self);
+		if (!pre_init(self, args))
 			return (NULL);
-		}
 		if (!(self->forks_array = create_forks_array(self->quantity)))
 		{
 			pthread_mutex_destroy(&self->output);
@@ -106,8 +115,6 @@ t_table		*table_new(const t_args *args)
 			free(self);
 			return (NULL);
 		}
-		self->start_simulation = table_start_simulation;
-		self->del = table_del;
 	}
 	return (self);
 }
