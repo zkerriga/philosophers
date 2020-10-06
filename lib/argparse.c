@@ -47,11 +47,11 @@ static int	set_arguments(t_args *args, int ac, char **av)
 	args->number_of_times_each_philosopher_must_eat = -1;
 	if ((args->number_of_philosophers = simple_atoi(av[1])) < 1)
 		put_error("The number of philosophers must be a positive number!");
-	else if ((args->time_to_die = simple_atoi(av[2])) < 1)
+	else if ((args->time_to_die = simple_atoi(av[2]) * 1000) < 1)
 		put_error("Time to death must be a positive number!");
-	else if ((args->time_to_eat = simple_atoi(av[3])) < 1)
+	else if ((args->time_to_eat = simple_atoi(av[3]) * 1000) < 1)
 		put_error("Time to eat must be a positive number!");
-	else if ((args->time_to_sleep = simple_atoi(av[4])) < 1)
+	else if ((args->time_to_sleep = simple_atoi(av[4]) * 1000) < 1)
 		put_error("Time to sleep must be a positive number!");
 	else if (ac == 6)
 	{

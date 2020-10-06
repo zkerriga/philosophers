@@ -13,7 +13,7 @@
 #ifndef LIB_H
 # define LIB_H
 
-#define DEBUG 1 //TODO: delete this
+#define DEBUG 0 //TODO: delete this
 #if DEBUG == 1
 #include <stdio.h>
 //#define D(x) {printf("\033[35m"); x ; printf("\033[0m");}
@@ -46,6 +46,8 @@ void			put_error(const char *error_str);
 int				argparse(t_args *args, int ac, char **av);
 char			*ft_say_join(const char *time, const char *nbr,
 								const char *message);
+void			set_time_usec(size_t *dest);
+void			ft_usleep(size_t time_usec);
 
 int				ft_isspace(int c);
 int				ft_isdigit(int c);
