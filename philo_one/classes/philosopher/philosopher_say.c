@@ -52,7 +52,7 @@ static void	*create_and_put_str(t_say *say)
 	return (THREAD_SUCCESS);
 }
 
-pthread_t	philosopher_say(t_philosopher *self, const char *message, int is_die)
+pthread_t	philosopher_say(t_philosopher *self, const char *message, int die)
 {
 	t_say		*say;
 	pthread_t	say_thread;
@@ -65,9 +65,10 @@ pthread_t	philosopher_say(t_philosopher *self, const char *message, int is_die)
 	set_time_usec(&say->time_usec);
 	say->id = self->id;
 	say->message = message;
-	say->is_die = is_die;
+	say->is_die = die;
 	say->output = self->output;
-	if (pthread_create(&say_thread, NULL, (void *(*)(void *))create_and_put_str, say))
+	if (pthread_create(&say_thread, NULL, (void *(*)(void *))create_and_put_str,
+						say))
 	{
 		free(say);
 		put_error("A thread error during the speech. Skipped!");

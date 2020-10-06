@@ -56,6 +56,7 @@ t_philosopher		*philosopher_new(int *someone_died, pthread_mutex_t *output, cons
 
 void				*philosopher_action(t_philosopher *self);
 void				*philosopher_lifetime(t_philosopher *self);
-pthread_t			philosopher_say(t_philosopher *self, const char *message, int is_die);
+pthread_t			philosopher_say(t_philosopher *self, const char *message,
+									int is_die);
 
 #endif

@@ -42,9 +42,11 @@ void	*philosopher_action(t_philosopher *self)
 	while (self->eat_counter)
 	{
 		if (!*self->someone_died)
-			philosopher_take_a_fork(self, (self->id % 2) ? self->forks.left : self->forks.right);
+			philosopher_take_a_fork(self,
+						(self->id % 2) ? self->forks.left : self->forks.right);
 		if (!*self->someone_died)
-			philosopher_take_a_fork(self, (self->id % 2) ? self->forks.right : self->forks.left);
+			philosopher_take_a_fork(self,
+						(self->id % 2) ? self->forks.right : self->forks.left);
 		if (!*self->someone_died)
 			philosopher_eating(self);
 		if (!*self->someone_died)
