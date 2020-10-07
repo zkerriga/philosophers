@@ -12,13 +12,42 @@
 
 #include "philosopher.h"
 
-static int	time_was_changed(t_philosopher *self, size_t last_eat_time,
+/*static int	time_was_changed(t_philosopher *self, size_t last_eat_time,
 								size_t *eat_time_cp)
 {
 	pthread_mutex_lock(&self->eat_mutex);
 	*eat_time_cp = self->eat_time;
 	pthread_mutex_unlock(&self->eat_mutex);
 	return (*eat_time_cp > last_eat_time);
+}*/
+
+void		*philosopher_lifetime(t_philosopher *self)
+{
+	const int	delay = 500;
+	time_t		time_to_die;
+	time_t		current_time;
+
+	time_to_die = self->stats->time_to_die;
+	while (!(*self->born))
+		;
+	while (!*self->someone_died)
+	{
+		pthread_mutex_lock(&self->eat_mutex);
+		set_time_usec(&current_time);
+		if (current_time - self->eat_time > time_to_die)
+		{
+			if (!*self->someone_died)
+			{
+				*self->someone_died = 1;
+				self->say(self, SAY_DIE, 1);
+			}
+			pthread_mutex_unlock(self->forks.left);
+			pthread_mutex_unlock(self->forks.right);
+		}
+		pthread_mutex_unlock(&self->eat_mutex);
+		usleep(delay);
+	}
+	return (THREAD_SUCCESS);
 }
 
 /*
@@ -28,6 +57,7 @@ static int	time_was_changed(t_philosopher *self, size_t last_eat_time,
 ** for the death message to finish printing.
 */
 
+/*
 void		*philosopher_lifetime(t_philosopher *self)
 {
 	size_t		next_sleep_time;
@@ -51,3 +81,4 @@ void		*philosopher_lifetime(t_philosopher *self)
 	}
 	return (THREAD_SUCCESS);
 }
+*/

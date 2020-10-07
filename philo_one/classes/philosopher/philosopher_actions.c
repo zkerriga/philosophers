@@ -42,6 +42,8 @@ void	*philosopher_action(t_philosopher *self)
 	is_limited = (self->stats->n_of_times > 0);
 	while (!(*self->born))
 		;
+	set_time_usec(&self->eat_time);
+	pthread_mutex_unlock(&self->eat_mutex);
 	while (self->eat_counter)
 	{
 		philosopher_take_a_fork(self,

@@ -25,5 +25,4 @@ void	table_start_simulation(t_table *self)
 	{
 		pthread_join(self->philosophers_array[i]->lifetime, NULL);
 	}
-	D(puts("END OF JOIN");)
 }

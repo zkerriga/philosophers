@@ -16,7 +16,7 @@
 ** Returns the time in microseconds.
 */
 
-size_t	get_time_usec(void)
+time_t	get_time_usec(void)
 {
 	struct timeval	tv;
 	const int		sec_to_usec = 1000000;
@@ -29,7 +29,7 @@ size_t	get_time_usec(void)
 ** Writes the time in microseconds to `dest'.
 */
 
-void	set_time_usec(size_t *dest)
+void	set_time_usec(time_t *dest)
 {
 	struct timeval	tv;
 	const int		sec_to_usec = 1000000;

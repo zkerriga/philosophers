@@ -44,7 +44,7 @@ typedef struct		s_philosopher
 	pthread_t		actions;
 	t_forks			forks;
 	pthread_mutex_t	*output;
-	size_t			eat_time;
+	time_t			eat_time;
 	pthread_mutex_t	eat_mutex;
 	int				*someone_died;
 	ssize_t			eat_counter;

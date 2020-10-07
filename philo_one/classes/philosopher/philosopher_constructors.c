@@ -51,6 +51,7 @@ pthread_create(&self->lifetime, NULL,
 		{
 			return (NULL);
 		}
+		pthread_mutex_lock(&self->eat_mutex);
 		self->say = philosopher_say;
 		self->del = philosopher_del;
 	}

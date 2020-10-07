@@ -43,8 +43,8 @@ void			put_error(const char *error_str);
 int				argparse(t_args *args, int ac, char **av);
 char			*ft_say_join(const char *time, const char *nbr,
 								const char *message);
-void			set_time_usec(size_t *dest);
-size_t			get_time_usec(void);
+void			set_time_usec(time_t *dest);
+time_t			get_time_usec(void);
 void			ft_usleep(size_t time_usec);
 
 int				ft_isspace(int c);
