@@ -13,7 +13,7 @@
 #ifndef LIB_H
 # define LIB_H
 
-# define DEBUG 0 //TODO: delete this
+# define DEBUG 1 //TODO: delete this
 # if DEBUG == 1
 #  include <stdio.h>
 #  define D(x) {printf("\033[35m"); x ; printf("\033[0m");}

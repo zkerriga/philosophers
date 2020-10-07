@@ -12,6 +12,8 @@
 
 #include "philosopher.h"
 
+extern size_t	g_time;
+
 static void	put_and_free_full_str(t_say *say, char *full_str)
 {
 	size_t			len;
@@ -63,6 +65,7 @@ pthread_t	philosopher_say(t_philosopher *self, const char *message, int die)
 		return (NULL);
 	}
 	set_time_usec(&say->time_usec);
+	say->time_usec -= g_time;
 	say->id = self->id;
 	say->message = message;
 	say->is_die = die;

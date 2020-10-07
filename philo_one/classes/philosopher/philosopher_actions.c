@@ -37,6 +37,9 @@ void	philosopher_sleeping(t_philosopher *self)
 
 void	*philosopher_action(t_philosopher *self)
 {
+	int	is_limited;
+
+	is_limited = (self->stats->n_of_times > 0);
 	while (!(*self->born))
 		;
 	while (self->eat_counter)
@@ -53,10 +56,9 @@ void	*philosopher_action(t_philosopher *self)
 			philosopher_sleeping(self);
 		if (!*self->someone_died)
 			self->say(self, SAY_THINK, 0);
-		if (self->stats->n_of_times > 0)
+		if (is_limited)
 			--self->eat_counter;
-		if (!self->eat_counter)
-			*self->someone_died = 1;
 	}
+	*self->someone_died = 1;
 	return (THREAD_SUCCESS);
 }
