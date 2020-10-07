@@ -12,8 +12,6 @@
 
 #include "philo_one.h"
 
-size_t	g_time; //TODO: delete this
-
 int		main(int ac, char **av)
 {
 	t_args	args;

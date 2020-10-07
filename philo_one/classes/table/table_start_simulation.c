@@ -12,14 +12,11 @@
 
 #include "table.h"
 
-extern size_t	g_time;
-
 void	table_start_simulation(t_table *self)
 {
 	size_t	i;
 
 	i = self->quantity;
-	set_time_usec(&g_time);
 	self->born = 1;
 	while (i--)
 	{

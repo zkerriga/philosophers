@@ -12,8 +12,6 @@
 
 #include "philosopher.h"
 
-extern size_t	g_time;
-
 void	philosopher_say(t_philosopher *self, const char *message, int is_die)
 {
 	char	*time_str;
@@ -21,7 +19,7 @@ void	philosopher_say(t_philosopher *self, const char *message, int is_die)
 	char	*full_str;
 	size_t	len;
 
-	time_str = ft_itoa((get_time_usec() - g_time) / 1000);
+	time_str = ft_itoa(get_time_usec() / 1000);
 	nbr_str = ft_itoa(self->id);
 	if (!time_str || !nbr_str ||
 		!(full_str = ft_say_join(time_str, nbr_str, message)))
@@ -39,4 +37,5 @@ void	philosopher_say(t_philosopher *self, const char *message, int is_die)
 	if (!is_die)
 		pthread_mutex_unlock(self->output);
 	free(full_str);
+	usleep(10);
 }

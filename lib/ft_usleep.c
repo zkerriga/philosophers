@@ -12,17 +12,18 @@
 
 #include "lib.h"
 
-void	ft_usleep(size_t time_usec)
+void	ft_usleep(time_t time_usec)
 {
-	size_t		start_time;
-	size_t		current_time;
-	const int	inaccuracy = 20;
+	time_t		start_time;
+	time_t		current_time;
+	const int	inaccuracy = 35;
 
 	time_usec -= inaccuracy;
 	set_time_usec(&start_time);
 	set_time_usec(&current_time);
 	while (current_time - start_time < time_usec)
 	{
+		usleep(10);
 		set_time_usec(&current_time);
 	}
 }
