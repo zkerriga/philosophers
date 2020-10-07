@@ -16,7 +16,7 @@ void	ft_usleep(size_t time_usec)
 {
 	size_t		start_time;
 	size_t		current_time;
-	const int	inaccuracy = 0;
+	const int	inaccuracy = 20;
 
 	time_usec -= inaccuracy;
 	set_time_usec(&start_time);

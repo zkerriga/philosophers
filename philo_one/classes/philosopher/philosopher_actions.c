@@ -44,20 +44,19 @@ void	*philosopher_action(t_philosopher *self)
 		;
 	while (self->eat_counter)
 	{
-		if (!*self->someone_died)
-			philosopher_take_a_fork(self,
+		philosopher_take_a_fork(self,
 						(self->id % 2) ? self->forks.left : self->forks.right);
-		if (!*self->someone_died)
-			philosopher_take_a_fork(self,
+		philosopher_take_a_fork(self,
 						(self->id % 2) ? self->forks.right : self->forks.left);
-		if (!*self->someone_died)
-			philosopher_eating(self);
-		if (!*self->someone_died)
-			philosopher_sleeping(self);
-		if (!*self->someone_died)
-			self->say(self, SAY_THINK, 0);
+		if (*self->someone_died)
+			break ;
+		philosopher_eating(self);
+		philosopher_sleeping(self);
+		self->say(self, SAY_THINK, 0);
 		if (is_limited)
 			--self->eat_counter;
+		if (*self->someone_died)
+			break ;
 	}
 	*self->someone_died = 1;
 	return (THREAD_SUCCESS);
