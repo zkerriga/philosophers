@@ -23,7 +23,7 @@ void	ft_usleep(time_t time_usec)
 	set_time_usec(&current_time);
 	while (current_time - start_time < time_usec)
 	{
-		usleep(10);
+		usleep(1);
 		set_time_usec(&current_time);
 	}
 }
