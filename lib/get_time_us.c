@@ -13,6 +13,19 @@
 #include "lib.h"
 
 /*
+** Returns the time in microseconds.
+*/
+
+size_t	get_time_usec(void)
+{
+	struct timeval	tv;
+	const int		sec_to_usec = 1000000;
+
+	gettimeofday(&tv, NULL);
+	return (tv.tv_usec + tv.tv_sec * sec_to_usec);
+}
+
+/*
 ** Writes the time in microseconds to `dest'.
 */
 

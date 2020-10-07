@@ -47,7 +47,7 @@ void		*philosopher_lifetime(t_philosopher *self)
 	if (!*self->someone_died && self->eat_counter != 0)
 	{
 		*self->someone_died = 1;
-		pthread_join(self->say(self, SAY_DIE, 1), NULL);
+		self->say(self, SAY_DIE, 1);
 	}
 	return (THREAD_SUCCESS);
 }
