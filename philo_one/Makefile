@@ -21,11 +21,13 @@ CC = gcc
 INCLUDES = -I$(LIB_DIR) -I$(HDR_DIR)
 FLAGS = -Wall -Wextra -Werror $(INCLUDES)
 
-LIB_FILES = $(wildcard $(LIB_DIR)/*.c)
+LIB_FILES = $(addprefix $(LIB_DIR)/,argparse.c ft_isdigit.c ft_isspace.c ft_itoa.c ft_say_join.c ft_strlcpy.c \
+									ft_strlen.c ft_usleep.c get_time_us.c put_error.c )
 LIB_FILES_O = $(addprefix $(OBJ_DIR)/, $(subst ../,,$(LIB_FILES:.c=.o)))
 
-# TODO: заменить на перепись файлов
-FILES = $(wildcard *.c) $(wildcard classes/*/*.c)
+FILES = main.c \
+		$(addprefix classes/philosopher/philosopher, _actions.c _constructors.c _lifetime.c _say.c ) \
+		$(addprefix classes/table/table, _constructors.c _start_simulation.c )
 FILES_O = $(addprefix $(OBJ_DIR)/$(PRJ_DIR)/, $(FILES:.c=.o))
 
 .PHONY: all

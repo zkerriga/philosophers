@@ -15,7 +15,6 @@
 
 static void		philosopher_del(t_philosopher *self)
 {
-	D(printf("id = %ld - all = %ld - counter = %ld\n", self->id,self->stats->n_of_times , self->eat_counter);)
 	pthread_mutex_destroy(&self->eat_mutex);
 	free(self);
 }
