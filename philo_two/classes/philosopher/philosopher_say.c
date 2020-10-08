@@ -33,9 +33,9 @@ void	philosopher_say(t_philosopher *self, const char *message, int is_die)
 	free(time_str);
 	free(nbr_str);
 	len = ft_strlen(full_str);
-	pthread_mutex_lock(self->output);
+	sem_wait(self->output);
 	write(1, full_str, len);
 	if (!is_die)
-		pthread_mutex_unlock(self->output);
+		sem_post(self->output);
 	free(full_str);
 }

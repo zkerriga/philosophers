@@ -17,6 +17,7 @@
 # include <unistd.h>
 # include <sys/time.h>
 # include <pthread.h>
+# include <semaphore.h>
 # include <errno.h>
 
 # define THREAD_SUCCESS 0

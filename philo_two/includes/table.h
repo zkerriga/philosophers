@@ -22,8 +22,8 @@ typedef struct		s_table
 	size_t			quantity;
 	int				born;
 	int				someone_died;
-	pthread_mutex_t	output;
-	pthread_mutex_t	*forks_array;
+	sem_t			*output;
+	sem_t			*forks;
 	t_philosopher	**philosophers_array;
 	void			(*start_simulation)(struct s_table *);
 	void			(*del)(struct s_table *);

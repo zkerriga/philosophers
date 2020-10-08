@@ -15,7 +15,6 @@
 
 static void		philosopher_del(t_philosopher *self)
 {
-	pthread_mutex_destroy(&self->eat_mutex);
 	free(self);
 }
 
@@ -23,12 +22,12 @@ static void		table_pre_init(t_philosopher *self, t_table *table)
 {
 	self->born = &table->born;
 	self->stats = table->stats;
-	self->output = &table->output;
+	self->output = table->output;
+	self->forks = table->forks;
 	self->someone_died = &table->someone_died;
 }
 
-t_philosopher	*philosopher_new(void *table, size_t id,
-						pthread_mutex_t *left_fork, pthread_mutex_t *right_fork)
+t_philosopher	*philosopher_new(void *table, size_t id)
 {
 	t_philosopher	*self;
 	ssize_t			n_of_times;
@@ -37,20 +36,20 @@ t_philosopher	*philosopher_new(void *table, size_t id,
 	{
 		self->id = id;
 		table_pre_init(self, table);
-		self->forks.left = left_fork;
-		self->forks.right = right_fork;
 		self->eat_time = 0;
+		sem_unlink("sem_eat_mutex");
+		if ((self->eat_mutex = sem_open("sem_eat_mutex", O_CREAT | O_TRUNC | O_RDWR, S_IRWXU, 1)) == SEM_FAILED)
+			return (NULL);
+		sem_wait(self->eat_mutex);
 		n_of_times = self->stats->n_of_times;
 		self->eat_counter = (n_of_times < 0) ? 1 : n_of_times;
-		if (pthread_mutex_init(&self->eat_mutex, NULL) ||
-pthread_create(&self->actions, NULL,
+		if (pthread_create(&self->actions, NULL,
 			(void *(*)(void *))philosopher_action, self) ||
-pthread_create(&self->lifetime, NULL,
+			pthread_create(&self->lifetime, NULL,
 			(void *(*)(void *))philosopher_lifetime, self))
 		{
 			return (NULL);
 		}
-		pthread_mutex_lock(&self->eat_mutex);
 		self->say = philosopher_say;
 		self->del = philosopher_del;
 	}

@@ -23,7 +23,7 @@ void		*philosopher_lifetime(t_philosopher *self)
 		;
 	while (!*self->someone_died)
 	{
-		pthread_mutex_lock(&self->eat_mutex);
+		sem_wait(self->eat_mutex);
 		set_time_usec(&current_time);
 		if (current_time - self->eat_time > time_to_die)
 		{
@@ -32,10 +32,10 @@ void		*philosopher_lifetime(t_philosopher *self)
 				*self->someone_died = 1;
 				self->say(self, SAY_DIE, 1);
 			}
-			pthread_mutex_unlock(self->forks.left);
-			pthread_mutex_unlock(self->forks.right);
+			sem_post(self->forks);
+			sem_post(self->forks);
 		}
-		pthread_mutex_unlock(&self->eat_mutex);
+		sem_post(self->eat_mutex);
 		usleep(delay);
 	}
 	return (THREAD_SUCCESS);
