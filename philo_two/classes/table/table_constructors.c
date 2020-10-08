@@ -22,6 +22,8 @@ static void				table_del(t_table *self)
 		self->philosophers_array[i]->del(self->philosophers_array[i]);
 		++i;
 	}
+	sem_close(self->output);
+//	sem_close(self->forks);
 	free(self);
 }
 
@@ -61,19 +63,21 @@ static void				pre_init(t_table *self, const t_args *args)
 
 t_table					*table_new(const t_args *args)
 {
-	t_table	*self;
+	const char	*sem_output = "sem_output";
+	const char	*sem_forks = "sem_forks";
+	t_table		*self;
 
 	if ((self = (t_table *)malloc(sizeof(t_table))))
 	{
 		pre_init(self, args);
-		sem_unlink("sem_output");
-		if ((self->output = sem_open("sem_output", O_CREAT | O_TRUNC | O_RDWR,
+		sem_unlink(sem_output);
+		if ((self->output = sem_open(sem_output, O_CREAT | O_RDWR,
 										S_IRWXU, 1)) == SEM_FAILED)
 		{
 			return (NULL);
 		}
-		sem_unlink("sem_forks");
-		if ((self->forks = sem_open("sem_forks", O_CREAT | O_TRUNC | O_RDWR,
+		sem_unlink(sem_forks);
+		if ((self->forks = sem_open(sem_forks, O_CREAT | O_RDWR,
 										S_IRWXU, self->quantity)) == SEM_FAILED)
 		{
 			return (NULL);
