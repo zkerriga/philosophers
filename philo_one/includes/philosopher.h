@@ -20,15 +20,6 @@
 # define SAY_THINK "is thinking"
 # define SAY_DIE "died"
 
-typedef struct		s_say
-{
-	size_t			time_usec;
-	size_t			id;
-	const char		*message;
-	int				is_die;
-	pthread_mutex_t	*output;
-}					t_say;
-
 typedef struct		s_forks
 {
 	pthread_mutex_t	*right;
