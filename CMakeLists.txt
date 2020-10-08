@@ -17,7 +17,18 @@ set(PHILO_ONE
         philo_one/classes/philosopher/philosopher_say.c
         )
 
+set(PHILO_TWO
+        philo_two/main.c
+        philo_two/classes/table/table_constructors.c
+        philo_two/classes/table/table_start_simulation.c
+
+        philo_two/classes/philosopher/philosopher_constructors.c
+        philo_two/classes/philosopher/philosopher_actions.c
+        philo_two/classes/philosopher/philosopher_lifetime.c
+        philo_two/classes/philosopher/philosopher_say.c
+        )
+
 add_executable(philosophers
         ${LIB}
-        ${PHILO_ONE}
+        ${PHILO_TWO}
         )

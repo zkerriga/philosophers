@@ -30,13 +30,15 @@ FILES = main.c \
 		$(addprefix classes/table/table, _constructors.c _start_simulation.c )
 FILES_O = $(addprefix $(OBJ_DIR)/$(PRJ_DIR)/, $(FILES:.c=.o))
 
+OBJ_DIRS =	$(OBJ_DIR) $(OBJ_DIR)/$(PRJ_DIR) $(OBJ_DIR)/$(subst ../,,$(LIB_DIR)) \
+			$(OBJ_DIR)/$(PRJ_DIR)/classes/table $(OBJ_DIR)/$(PRJ_DIR)/classes/philosopher
+
 .PHONY: all
-all: $(OBJ_DIR) $(NAME)
+all: $(OBJ_DIRS) $(NAME)
 	@echo "\n\033[32m[+] The $(NAME) assembled!\033[0m\n"
 
-$(OBJ_DIR):
-	@mkdir -p	$(OBJ_DIR) $(OBJ_DIR)/$(PRJ_DIR) $(OBJ_DIR)/$(subst ../,,$(LIB_DIR)) \
-				$(OBJ_DIR)/$(PRJ_DIR)/classes/table $(OBJ_DIR)/$(PRJ_DIR)/classes/philosopher
+$(OBJ_DIRS):
+	@mkdir -p $(OBJ_DIRS)
 
 $(NAME): $(LIB_FILES_O) $(FILES_O)
 	@$(CC) $(FLAGS) $(LIB_FILES_O) $(FILES_O) -o $(NAME)
