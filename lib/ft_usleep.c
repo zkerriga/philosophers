@@ -16,14 +16,15 @@ void	ft_usleep(time_t time_usec)
 {
 	time_t		start_time;
 	time_t		current_time;
-	const int	inaccuracy = 35;
+	const int	inaccuracy = 55;
 
 	time_usec -= inaccuracy;
 	set_time_usec(&start_time);
+	usleep(time_usec / 4);
 	set_time_usec(&current_time);
 	while (current_time - start_time < time_usec)
 	{
-		usleep(1);
+		usleep(10);
 		set_time_usec(&current_time);
 	}
 }
