@@ -12,10 +12,16 @@
 
 #include "philosopher.h"
 
-void	philosopher_take_a_fork(t_philosopher *self)
+void	philosopher_take_a_forks(t_philosopher *self)
 {
+	sem_wait(self->waiter);
+
 	sem_wait(self->forks);
 	self->say(self, SAY_FORK, 0);
+	sem_wait(self->forks);
+	self->say(self, SAY_FORK, 0);
+
+	sem_post(self->waiter);
 }
 
 void	philosopher_eating(t_philosopher *self)
@@ -46,8 +52,9 @@ void	*philosopher_action(t_philosopher *self)
 	sem_post(self->eat_mutex);
 	while (self->eat_counter)
 	{
-		philosopher_take_a_fork(self);
-		philosopher_take_a_fork(self);
+		if (*self->someone_died)
+			break ;
+		philosopher_take_a_forks(self);
 		if (*self->someone_died)
 			break ;
 		philosopher_eating(self);

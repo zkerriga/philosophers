@@ -20,7 +20,6 @@ void	philosopher_say(t_philosopher *self, const char *message, int is_die)
 	size_t	len;
 
 	time_str = ft_itoa(get_time_usec() / 1000);
-	usleep(1);
 	nbr_str = ft_itoa(self->id);
 	if (!time_str || !nbr_str ||
 		!(full_str = ft_say_join(time_str, nbr_str, message)))
@@ -34,8 +33,10 @@ void	philosopher_say(t_philosopher *self, const char *message, int is_die)
 	free(nbr_str);
 	len = ft_strlen(full_str);
 	sem_wait(self->output);
-	write(1, full_str, len);
-	if (!is_die)
-		sem_post(self->output);
+	if (!*self->someone_died)
+		write(1, full_str, len);
+	if (is_die)
+		*self->someone_died = 1;
+	sem_post(self->output);
 	free(full_str);
 }

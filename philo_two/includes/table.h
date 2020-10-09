@@ -24,6 +24,7 @@ typedef struct		s_table
 	int				someone_died;
 	sem_t			*output;
 	sem_t			*forks;
+	sem_t			*waiter;
 	t_philosopher	**philosophers_array;
 	void			(*start_simulation)(struct s_table *);
 	void			(*del)(struct s_table *);

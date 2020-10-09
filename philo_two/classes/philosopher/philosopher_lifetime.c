@@ -29,8 +29,8 @@ void		*philosopher_lifetime(t_philosopher *self)
 		{
 			if (!*self->someone_died)
 			{
-				*self->someone_died = 1;
 				self->say(self, SAY_DIE, 1);
+				*self->someone_died = 1;
 			}
 		}
 		sem_post(self->eat_mutex);

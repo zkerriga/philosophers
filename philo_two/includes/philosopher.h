@@ -29,6 +29,7 @@ typedef struct		s_philosopher
 	pthread_t		actions;
 	sem_t			*forks;
 	sem_t			*output;
+	sem_t			*waiter;
 	time_t			eat_time;
 	sem_t			*eat_mutex;
 	int				*someone_died;

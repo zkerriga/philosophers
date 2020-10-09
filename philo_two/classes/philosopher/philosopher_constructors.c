@@ -16,6 +16,8 @@
 static void		philosopher_del(t_philosopher *self)
 {
 	sem_close(self->eat_mutex);
+	sem_post(self->forks);
+	sem_post(self->forks);
 	free(self);
 }
 
@@ -23,8 +25,9 @@ static void		table_pre_init(t_philosopher *self, t_table *table)
 {
 	self->born = &table->born;
 	self->stats = table->stats;
-	self->output = table->output;
 	self->forks = table->forks;
+	self->output = table->output;
+	self->waiter = table->waiter;
 	self->someone_died = &table->someone_died;
 }
 
@@ -45,7 +48,6 @@ static char		*get_sem_name(const char *default_name, size_t id)
 		ft_strlcpy(&(sem_name[len_default]), nbr_str, len_nbr + 1);
 	}
 	free(nbr_str);
-	D(puts(sem_name);)
 	return (sem_name);
 }
 
