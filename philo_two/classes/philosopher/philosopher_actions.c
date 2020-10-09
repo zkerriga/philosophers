@@ -15,12 +15,10 @@
 void	philosopher_take_a_forks(t_philosopher *self)
 {
 	sem_wait(self->waiter);
-
 	sem_wait(self->forks);
 	self->say(self, SAY_FORK, 0);
 	sem_wait(self->forks);
 	self->say(self, SAY_FORK, 0);
-
 	sem_post(self->waiter);
 }
 

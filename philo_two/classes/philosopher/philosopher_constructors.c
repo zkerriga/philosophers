@@ -21,7 +21,7 @@ static void		philosopher_del(t_philosopher *self)
 	free(self);
 }
 
-static void		table_pre_init(t_philosopher *self, t_table *table)
+static void		*table_pre_init(t_philosopher *self, t_table *table)
 {
 	self->born = &table->born;
 	self->stats = table->stats;
@@ -29,6 +29,16 @@ static void		table_pre_init(t_philosopher *self, t_table *table)
 	self->output = table->output;
 	self->waiter = table->waiter;
 	self->someone_died = &table->someone_died;
+	self->say = philosopher_say;
+	self->del = philosopher_del;
+	if (pthread_create(&self->actions, NULL,
+						(void *(*)(void *))philosopher_action, self) ||
+		pthread_create(&self->lifetime, NULL,
+						(void *(*)(void *))philosopher_lifetime, self))
+	{
+		return (NULL);
+	}
+	return (self);
 }
 
 static char		*get_sem_name(const char *default_name, size_t id)
@@ -60,26 +70,21 @@ t_philosopher	*philosopher_new(void *table, size_t id)
 	if ((self = (t_philosopher *)malloc(sizeof(t_philosopher))))
 	{
 		self->id = id;
-		table_pre_init(self, table);
+		if (!(table_pre_init(self, table)))
+			return (NULL);
 		self->eat_time = 0;
 		if (!(sem_name = get_sem_name("sem_eat_mutex", id)))
 			return (NULL);
 		sem_unlink(sem_name);
-		if ((self->eat_mutex = sem_open(sem_name, O_CREAT | O_RDWR, S_IRWXU, 1)) == SEM_FAILED)
+		if ((self->eat_mutex = sem_open(sem_name, O_CREAT | O_RDWR,
+													S_IRWXU, 1)) == SEM_FAILED)
+		{
 			return (NULL);
+		}
 		free(sem_name);
 		sem_wait(self->eat_mutex);
 		n_of_times = self->stats->n_of_times;
 		self->eat_counter = (n_of_times < 0) ? 1 : n_of_times;
-		if (pthread_create(&self->actions, NULL,
-			(void *(*)(void *))philosopher_action, self) ||
-			pthread_create(&self->lifetime, NULL,
-			(void *(*)(void *))philosopher_lifetime, self))
-		{
-			return (NULL);
-		}
-		self->say = philosopher_say;
-		self->del = philosopher_del;
 	}
 	return (self);
 }

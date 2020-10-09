@@ -52,32 +52,35 @@ static t_philosopher	**create_philo_array(t_table *self, const t_args *args)
 	return (philo_array);
 }
 
-static void				pre_init(t_table *self, const t_args *args)
+static t_table			*pre_init(t_table *self, const t_args *args)
 {
+	const char	*sem_output = "sem_output";
+
 	self->stats = args;
 	self->quantity = args->n_of_philosophers;
 	self->born = 0;
 	self->someone_died = 0;
 	self->start_simulation = table_start_simulation;
 	self->del = table_del;
+	sem_unlink(sem_output);
+	if ((self->output = sem_open(sem_output, O_CREAT | O_RDWR,
+													S_IRWXU, 1)) == SEM_FAILED)
+	{
+		return (NULL);
+	}
+	return (self);
 }
 
 t_table					*table_new(const t_args *args)
 {
-	const char	*sem_output = "sem_output";
 	const char	*sem_forks = "sem_forks";
 	const char	*sem_waiter = "sem_waiter";
 	t_table		*self;
 
 	if ((self = (t_table *)malloc(sizeof(t_table))))
 	{
-		pre_init(self, args);
-		sem_unlink(sem_output);
-		if ((self->output = sem_open(sem_output, O_CREAT | O_RDWR,
-										S_IRWXU, 1)) == SEM_FAILED)
-		{
+		if (!(pre_init(self, args)))
 			return (NULL);
-		}
 		sem_unlink(sem_forks);
 		if ((self->forks = sem_open(sem_forks, O_CREAT | O_RDWR,
 										S_IRWXU, self->quantity)) == SEM_FAILED)
