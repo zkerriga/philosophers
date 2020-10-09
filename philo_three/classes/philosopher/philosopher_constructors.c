@@ -17,6 +17,7 @@ static void		philosopher_del(t_philosopher *self)
 {
 	kill(self->pid, SIGKILL);
 	sem_close(self->eat_mutex);
+	sem_close(self->eat_sem);
 	sem_post(self->forks);
 	sem_post(self->forks);
 	free(self);
@@ -76,6 +77,16 @@ t_philosopher	*philosopher_new(void *table, size_t id)
 			return (NULL);
 		}
 		free(sem_name);
+		if (!(sem_name = get_sem_name("sem_eat_sem", id)))
+			return (NULL);
+		sem_unlink(sem_name);
+		if ((self->eat_sem = sem_open(sem_name, O_CREAT | O_RDWR,
+										S_IRWXU, 1)) == SEM_FAILED)
+		{
+			return (NULL);
+		}
+		free(sem_name);
+		sem_wait(self->eat_sem);
 		n_of_times = self->stats->n_of_times;
 		self->eat_counter = (n_of_times < 0) ? 1 : n_of_times;
 	}

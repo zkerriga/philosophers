@@ -25,6 +25,7 @@ typedef struct		s_table
 	sem_t			*output;
 	sem_t			*forks;
 	sem_t			*waiter;
+	ssize_t			all_eat_counter;
 	t_philosopher	**philosophers_array;
 	void			(*start_simulation)(struct s_table *);
 	void			(*del)(struct s_table *);

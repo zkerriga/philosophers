@@ -25,6 +25,7 @@ static void		table_pre_init(t_philosopher *self, t_table *table)
 	self->stats = table->stats;
 	self->output = &table->output;
 	self->someone_died = &table->someone_died;
+	self->all_eat_counter = &table->all_eat_counter;
 }
 
 t_philosopher	*philosopher_new(void *table, size_t id,

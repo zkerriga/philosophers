@@ -29,6 +29,7 @@ static void		*table_pre_init(t_philosopher *self, t_table *table)
 	self->output = table->output;
 	self->waiter = table->waiter;
 	self->someone_died = &table->someone_died;
+	self->all_eat_counter = &table->all_eat_counter;
 	self->say = philosopher_say;
 	self->del = philosopher_del;
 	if (pthread_create(&self->actions, NULL,

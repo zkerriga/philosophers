@@ -39,6 +39,7 @@ typedef struct		s_philosopher
 	pthread_mutex_t	eat_mutex;
 	int				*someone_died;
 	ssize_t			eat_counter;
+	ssize_t			*all_eat_counter;
 	void			(*say)(struct s_philosopher *, const char *, int);
 	void			(*del)(struct s_philosopher *);
 }					t_philosopher;

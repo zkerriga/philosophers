@@ -33,6 +33,7 @@ typedef struct		s_philosopher
 	time_t			eat_time;
 	sem_t			*eat_mutex;
 	ssize_t			eat_counter;
+	sem_t			*eat_sem;
 	void			(*say)(struct s_philosopher *, const char *, int);
 	void			(*del)(struct s_philosopher *);
 }					t_philosopher;

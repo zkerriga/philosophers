@@ -18,7 +18,7 @@ void	philosopher_take_a_fork(t_philosopher *self, pthread_mutex_t *fork)
 	self->say(self, SAY_FORK, 0);
 }
 
-void	philosopher_eating(t_philosopher *self)
+void	philosopher_eating(t_philosopher *self, int is_limited)
 {
 	pthread_mutex_lock(&self->eat_mutex);
 	set_time_usec(&self->eat_time);
@@ -27,6 +27,12 @@ void	philosopher_eating(t_philosopher *self)
 	ft_usleep(self->stats->time_to_eat);
 	pthread_mutex_unlock((self->id % 2) ? self->forks.right : self->forks.left);
 	pthread_mutex_unlock((self->id % 2) ? self->forks.left : self->forks.right);
+	if (is_limited)
+	{
+		--self->eat_counter;
+		if (self->eat_counter == 0)
+			--(*self->all_eat_counter);
+	}
 }
 
 void	philosopher_sleeping(t_philosopher *self)
@@ -44,7 +50,7 @@ void	*philosopher_action(t_philosopher *self)
 		;
 	set_time_usec(&self->eat_time);
 	pthread_mutex_unlock(&self->eat_mutex);
-	while (self->eat_counter)
+	while (*self->all_eat_counter)
 	{
 		philosopher_take_a_fork(self,
 						(self->id % 2) ? self->forks.left : self->forks.right);
@@ -52,11 +58,9 @@ void	*philosopher_action(t_philosopher *self)
 						(self->id % 2) ? self->forks.right : self->forks.left);
 		if (*self->someone_died)
 			break ;
-		philosopher_eating(self);
+		philosopher_eating(self, is_limited);
 		philosopher_sleeping(self);
 		self->say(self, SAY_THINK, 0);
-		if (is_limited)
-			--self->eat_counter;
 		if (*self->someone_died)
 			break ;
 	}

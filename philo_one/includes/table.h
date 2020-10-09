@@ -24,6 +24,7 @@ typedef struct		s_table
 	int				someone_died;
 	pthread_mutex_t	output;
 	pthread_mutex_t	*forks_array;
+	ssize_t			all_eat_counter;
 	t_philosopher	**philosophers_array;
 	void			(*start_simulation)(struct s_table *);
 	void			(*del)(struct s_table *);

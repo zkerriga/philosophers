@@ -83,6 +83,7 @@ static t_table			*pre_init(t_table *self, const t_args *args)
 	self->quantity = args->n_of_philosophers;
 	self->born = 0;
 	self->someone_died = 0;
+	self->all_eat_counter = args->n_of_philosophers;
 	self->start_simulation = table_start_simulation;
 	self->del = table_del;
 	if (pthread_mutex_init(&self->output, NULL))

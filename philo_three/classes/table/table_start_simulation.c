@@ -26,6 +26,7 @@ int		init_fork(t_table *self, size_t index)
 	else if (pid == 0)
 	{
 		philosopher_action(self->philosophers_array[index]);
+//		sem_post(self->philosophers_array[index]->eat_sem);
 		sem_post(self->simulation);
 		while (!usleep(1000))
 			;
@@ -37,10 +38,22 @@ int		init_fork(t_table *self, size_t index)
 	return (success_code);
 }
 
-void	table_start_simulation(t_table *self)
+void	*wait_eat_counter_thread(t_table *self)
 {
 	size_t	i;
-	int		ret;
+
+	i = 0;
+	while (i < self->quantity)
+		sem_wait(self->philosophers_array[i++]->eat_sem);
+	sem_post(self->simulation);
+	return (THREAD_SUCCESS);
+}
+
+void	table_start_simulation(t_table *self)
+{
+	size_t		i;
+	int			ret;
+	pthread_t	wait_eat_counter;
 
 	sem_wait(self->simulation);
 	i = 0;
@@ -48,6 +61,11 @@ void	table_start_simulation(t_table *self)
 	{
 		if ((ret = init_fork(self, i++)))
 			exit(ret);
+	}
+	if (pthread_create(&wait_eat_counter, NULL,
+						(void *(*)(void *))wait_eat_counter_thread, self))
+	{
+		exit(errno);
 	}
 	sem_wait(self->simulation);
 }
