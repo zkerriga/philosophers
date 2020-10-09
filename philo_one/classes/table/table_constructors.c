@@ -67,8 +67,6 @@ static t_philosopher	**create_philo_array(t_table *self, const t_args *args)
 &(self->forks_array[(i + 1 == args->n_of_philosophers) ? 0 : i + 1]));
 			if (!philo_array[i])
 			{
-				while (i--)
-					philo_array[i]->del(philo_array[i]);
 				return (NULL);
 			}
 			++i;
