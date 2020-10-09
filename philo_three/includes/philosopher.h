@@ -30,7 +30,6 @@ typedef struct		s_philosopher
 	sem_t			*forks;
 	sem_t			*output;
 	sem_t			*waiter;
-	sem_t			*simulation;
 	time_t			eat_time;
 	sem_t			*eat_mutex;
 	ssize_t			eat_counter;
