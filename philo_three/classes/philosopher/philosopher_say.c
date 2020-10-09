@@ -12,12 +12,22 @@
 
 #include "philosopher.h"
 
-void	philosopher_say(t_philosopher *self, const char *message, int is_die)
+static void	put_ph(t_philosopher *self, char *full_str, size_t len, int is_die)
+{
+	sem_wait(self->output);
+	if (self->i_am_alive)
+		write(1, full_str, len);
+	if (is_die)
+		self->i_am_alive = 0;
+	else
+		sem_post(self->output);
+}
+
+void		philosopher_say(t_philosopher *self, const char *message, int die)
 {
 	char	*time_str;
 	char	*nbr_str;
 	char	*full_str;
-	size_t	len;
 
 	time_str = ft_itoa(get_time_usec() / 1000);
 	nbr_str = ft_itoa(self->id);
@@ -31,16 +41,7 @@ void	philosopher_say(t_philosopher *self, const char *message, int is_die)
 	}
 	free(time_str);
 	free(nbr_str);
-	len = ft_strlen(full_str);
 	if (self->i_am_alive)
-	{
-		sem_wait(self->output);
-		if (self->i_am_alive)
-			write(1, full_str, len);
-		if (is_die)
-			self->i_am_alive = 0;
-		else
-			sem_post(self->output);
-	}
+		put_ph(self, full_str, ft_strlen(full_str), die);
 	free(full_str);
 }

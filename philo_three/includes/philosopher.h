@@ -42,6 +42,6 @@ t_philosopher		*philosopher_new(void *table, size_t id);
 int					philosopher_action(t_philosopher *self);
 void				*philosopher_lifetime(t_philosopher *self);
 void				philosopher_say(t_philosopher *self, const char *message,
-									int is_die);
+									int die);
 
 #endif
