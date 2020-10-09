@@ -53,6 +53,7 @@ static void		*table_pre_init(t_philosopher *self, t_table *table)
 	self->forks = table->forks;
 	self->output = table->output;
 	self->waiter = table->waiter;
+	self->simulation = table->simulation;
 	self->say = philosopher_say;
 	self->del = philosopher_del;
 	self->lifetime = NULL;

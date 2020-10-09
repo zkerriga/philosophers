@@ -29,6 +29,7 @@ void		*philosopher_lifetime(t_philosopher *self)
 			{
 				self->say(self, SAY_DIE, 1);
 				self->i_am_alive = 0;
+				sem_post(self->simulation);
 			}
 		}
 		sem_post(self->eat_mutex);
