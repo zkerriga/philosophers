@@ -33,10 +33,10 @@ void	philosopher_say(t_philosopher *self, const char *message, int is_die)
 	free(nbr_str);
 	len = ft_strlen(full_str);
 	sem_wait(self->output);
-	if (!*self->someone_died)
+	if (self->i_am_alive)
 		write(1, full_str, len);
 	if (is_die)
-		*self->someone_died = 1;
+		self->i_am_alive = 0;
 	sem_post(self->output);
 	free(full_str);
 }

@@ -15,6 +15,7 @@
 
 static void		philosopher_del(t_philosopher *self)
 {
+	kill(self->pid, SIGKILL);
 	sem_close(self->eat_mutex);
 	sem_post(self->forks);
 	sem_post(self->forks);
@@ -23,21 +24,15 @@ static void		philosopher_del(t_philosopher *self)
 
 static void		*table_pre_init(t_philosopher *self, t_table *table)
 {
-	self->born = &table->born;
+	self->i_am_alive = 1;
 	self->stats = table->stats;
 	self->forks = table->forks;
 	self->output = table->output;
 	self->waiter = table->waiter;
-	self->someone_died = &table->someone_died;
+	self->simulation = table->simulation;
 	self->say = philosopher_say;
 	self->del = philosopher_del;
-	if (pthread_create(&self->actions, NULL,
-						(void *(*)(void *))philosopher_action, self) ||
-		pthread_create(&self->lifetime, NULL,
-						(void *(*)(void *))philosopher_lifetime, self))
-	{
-		return (NULL);
-	}
+	self->lifetime = NULL;
 	return (self);
 }
 
@@ -82,7 +77,6 @@ t_philosopher	*philosopher_new(void *table, size_t id)
 			return (NULL);
 		}
 		free(sem_name);
-		sem_wait(self->eat_mutex);
 		n_of_times = self->stats->n_of_times;
 		self->eat_counter = (n_of_times < 0) ? 1 : n_of_times;
 	}

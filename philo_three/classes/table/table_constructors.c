@@ -25,6 +25,7 @@ static void				table_del(t_table *self)
 	sem_close(self->forks);
 	sem_close(self->waiter);
 	sem_close(self->output);
+	sem_close(self->simulation);
 	free(self);
 }
 
@@ -55,15 +56,20 @@ static t_philosopher	**create_philo_array(t_table *self, const t_args *args)
 static t_table			*pre_init(t_table *self, const t_args *args)
 {
 	const char	*sem_output = "sem_output";
+	const char	*sem_simulation = "sem_simulation";
 
 	self->stats = args;
 	self->quantity = args->n_of_philosophers;
-	self->born = 0;
-	self->someone_died = 0;
 	self->start_simulation = table_start_simulation;
 	self->del = table_del;
 	sem_unlink(sem_output);
 	if ((self->output = sem_open(sem_output, O_CREAT | O_RDWR,
+													S_IRWXU, 1)) == SEM_FAILED)
+	{
+		return (NULL);
+	}
+	sem_unlink(sem_simulation);
+	if ((self->simulation = sem_open(sem_simulation, O_CREAT | O_RDWR,
 													S_IRWXU, 1)) == SEM_FAILED)
 	{
 		return (NULL);

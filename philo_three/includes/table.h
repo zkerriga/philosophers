@@ -20,11 +20,10 @@ typedef struct		s_table
 {
 	const t_args	*stats;
 	size_t			quantity;
-	int				born;
-	int				someone_died;
 	sem_t			*output;
 	sem_t			*forks;
 	sem_t			*waiter;
+	sem_t			*simulation;
 	t_philosopher	**philosophers_array;
 	void			(*start_simulation)(struct s_table *);
 	void			(*del)(struct s_table *);
