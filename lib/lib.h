@@ -25,14 +25,6 @@
 
 # define THREAD_SUCCESS 0
 
-# define DEBUG 0
-# if DEBUG == 1
-#  include <stdio.h>
-#  define D(x) {printf("\033[35m"); x ; printf("\033[0m");}
-# else
-#  define D(x) {}
-# endif
-
 typedef struct	s_args
 {
 	ssize_t		n_of_philosophers;

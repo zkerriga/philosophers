@@ -23,19 +23,6 @@ static void		philosopher_del(t_philosopher *self)
 	free(self);
 }
 
-static void		*table_pre_init(t_philosopher *self, t_table *table)
-{
-	self->i_am_alive = 1;
-	self->stats = table->stats;
-	self->forks = table->forks;
-	self->output = table->output;
-	self->waiter = table->waiter;
-	self->say = philosopher_say;
-	self->del = philosopher_del;
-	self->lifetime = NULL;
-	return (self);
-}
-
 static char		*get_sem_name(const char *default_name, size_t id)
 {
 	char	*sem_name;
@@ -56,6 +43,32 @@ static char		*get_sem_name(const char *default_name, size_t id)
 	return (sem_name);
 }
 
+static void		*table_pre_init(t_philosopher *self, t_table *table)
+{
+	char	*sem_name;
+
+	self->i_am_alive = 1;
+	self->eat_time = 0;
+	self->stats = table->stats;
+	self->forks = table->forks;
+	self->output = table->output;
+	self->waiter = table->waiter;
+	self->say = philosopher_say;
+	self->del = philosopher_del;
+	self->lifetime = NULL;
+	if (!(sem_name = get_sem_name("sem_eat_sem", self->id)))
+		return (NULL);
+	sem_unlink(sem_name);
+	if ((self->eat_sem = sem_open(sem_name, O_CREAT | O_RDWR,
+													S_IRWXU, 1)) == SEM_FAILED)
+	{
+		return (NULL);
+	}
+	free(sem_name);
+	sem_wait(self->eat_sem);
+	return (self);
+}
+
 t_philosopher	*philosopher_new(void *table, size_t id)
 {
 	t_philosopher	*self;
@@ -67,7 +80,6 @@ t_philosopher	*philosopher_new(void *table, size_t id)
 		self->id = id;
 		if (!(table_pre_init(self, table)))
 			return (NULL);
-		self->eat_time = 0;
 		if (!(sem_name = get_sem_name("sem_eat_mutex", id)))
 			return (NULL);
 		sem_unlink(sem_name);
@@ -77,16 +89,6 @@ t_philosopher	*philosopher_new(void *table, size_t id)
 			return (NULL);
 		}
 		free(sem_name);
-		if (!(sem_name = get_sem_name("sem_eat_sem", id)))
-			return (NULL);
-		sem_unlink(sem_name);
-		if ((self->eat_sem = sem_open(sem_name, O_CREAT | O_RDWR,
-										S_IRWXU, 1)) == SEM_FAILED)
-		{
-			return (NULL);
-		}
-		free(sem_name);
-		sem_wait(self->eat_sem);
 		n_of_times = self->stats->n_of_times;
 		self->eat_counter = (n_of_times < 0) ? 1 : n_of_times;
 	}

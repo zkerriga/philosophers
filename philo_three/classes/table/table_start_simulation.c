@@ -26,7 +26,6 @@ int		init_fork(t_table *self, size_t index)
 	else if (pid == 0)
 	{
 		philosopher_action(self->philosophers_array[index]);
-//		sem_post(self->philosophers_array[index]->eat_sem);
 		sem_post(self->simulation);
 		while (!usleep(1000))
 			;
@@ -65,6 +64,7 @@ void	table_start_simulation(t_table *self)
 	if (pthread_create(&wait_eat_counter, NULL,
 						(void *(*)(void *))wait_eat_counter_thread, self))
 	{
+		put_error("Thread error! Exit.");
 		exit(errno);
 	}
 	sem_wait(self->simulation);
