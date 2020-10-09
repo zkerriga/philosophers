@@ -15,7 +15,6 @@
 
 static void		philosopher_del(t_philosopher *self)
 {
-	kill(self->pid, SIGKILL);
 	sem_close(self->eat_mutex);
 	sem_close(self->eat_sem);
 	sem_post(self->forks);

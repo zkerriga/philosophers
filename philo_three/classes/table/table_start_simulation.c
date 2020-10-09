@@ -58,8 +58,13 @@ void	table_start_simulation(t_table *self)
 	i = 0;
 	while (i < self->quantity)
 	{
-		if ((ret = init_fork(self, i++)))
+		if ((ret = init_fork(self, i)))
+		{
+			while (i--)
+				kill(self->philosophers_array[i]->pid, SIGKILL);
 			exit(ret);
+		}
+		++i;
 	}
 	if (pthread_create(&wait_eat_counter, NULL,
 						(void *(*)(void *))wait_eat_counter_thread, self))

@@ -19,6 +19,7 @@ static void				table_del(t_table *self)
 	i = 0;
 	while (i < self->quantity)
 	{
+		kill(self->philosophers_array[i]->pid, SIGKILL);
 		sem_post(self->philosophers_array[i]->eat_sem);
 		self->philosophers_array[i]->del(self->philosophers_array[i]);
 		++i;
