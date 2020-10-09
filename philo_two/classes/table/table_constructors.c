@@ -90,7 +90,7 @@ t_table					*table_new(const t_args *args)
 		}
 		sem_unlink(sem_waiter);
 		if ((self->waiter = sem_open(sem_waiter, O_CREAT | O_RDWR,
-									S_IRWXU, self->quantity / 2)) == SEM_FAILED)
+		S_IRWXU, (self->quantity > 1) ? self->quantity / 2 : 1)) == SEM_FAILED)
 		{
 			return (NULL);
 		}

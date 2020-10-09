@@ -21,6 +21,7 @@ void	table_start_simulation(t_table *self)
 	while (i--)
 	{
 		pthread_join(self->philosophers_array[i]->lifetime, NULL);
-		pthread_join(self->philosophers_array[i]->actions, NULL);
+		if (self->quantity > 1)
+			pthread_join(self->philosophers_array[i]->actions, NULL);
 	}
 }
